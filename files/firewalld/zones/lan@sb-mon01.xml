@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Managed by Puppet -->
+<!-- puppetfile: firewalld/zones/lan@sb-mon01.xml -->
+<zone>
+  <source ipset="sblan"/>
+  <short>lan</short>
+  <description>Local Area Network accessible services</description>
+  <service name="ssh"/>
+  <service name="dhcpv6-client"/>
+  <rule>
+    <protocol value="igmp"/>
+    <accept/>
+  </rule>
+  <!-- monitoring client -->
+  <service name="snmp"/>
+  <service name="node_exporter"/>
+  <!-- monitoring server -->
+  <service name="http"/>
+  <service name="gmond"/>
+</zone>

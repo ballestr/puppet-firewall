@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Managed by Puppet -->
+<!-- puppetfile: firewalld/services/gmond.xml -->
+<service>
+  <short>gmond</short>
+  <description>gmond collector (server)</description>
+  <port protocol="udp" port="8649"/>
+  <port protocol="udp" port="6343"/> <!-- Host sFlow -->
+</service>

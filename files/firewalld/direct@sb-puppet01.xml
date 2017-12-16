@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Managed by Puppet -->
+<!-- puppetfile: firewalld/direct@sb-puppet01.xml -->
+<direct>
+  <!-- IPv4 -->
+  <chain ipv="ipv4" table="filter" chain="OUTd_sblan"/>
+  <chain ipv="ipv4" table="filter" chain="OUTd_ext"/>
+  <rule priority="0" table="filter" ipv="ipv4" chain="OUTPUT">-o lo -j ACCEPT</rule>
+  <rule priority="0" table="filter" ipv="ipv4" chain="OUTPUT">-m state --state ESTABLISHED,RELATED -j ACCEPT</rule>
+  <rule priority="1" table="filter" ipv="ipv4" chain="OUTPUT">-m set --match-set sblan dst -g OUTd_sblan</rule>
+  <rule priority="2" table="filter" ipv="ipv4" chain="OUTPUT">-d 169.254.169.254 -p tcp --dport 80 -j ACCEPT</rule><!-- puppet/openstack -->
+  <rule priority="8" table="filter" ipv="ipv4" chain="OUTPUT">-j LOG --log-level 6 --log-uid -m limit --limit 10/minute --log-prefix "fwOUTPUT "</rule>
+  <rule priority="9" table="filter" ipv="ipv4" chain="OUTPUT">-j ACCEPT</rule>
+  <!-- enforce: <rule priority="9" table="filter" ipv="ipv4" chain="OUTPUT">-j REJECT</rule> -->
+  <!-- IPv4 chain OUTd_sblan -->
+  <rule priority="2" table="filter" ipv="ipv4" chain="OUTd_sblan">-p udp --dport ntp -j ACCEPT</rule>
+  <rule priority="2" table="filter" ipv="ipv4" chain="OUTd_sblan">-p udp --dport domain -j ACCEPT</rule>
+  <rule priority="2" table="filter" ipv="ipv4" chain="OUTd_sblan">-p tcp --dport ssh -j ACCEPT</rule>
+  <rule priority="2" table="filter" ipv="ipv4" chain="OUTd_sblan">-p tcp --dport 8140 -j ACCEPT</rule><!-- puppet -->
+  <rule priority="2" table="filter" ipv="ipv4" chain="OUTd_sblan">-p udp --dport 8649 -j ACCEPT</rule><!-- ganglia -->
+  <rule priority="2" table="filter" ipv="ipv4" chain="OUTd_sblan">-p tcp --dport 9100 -j ACCEPT</rule><!-- Prometheus node exporter -->
+  <rule priority="8" table="filter" ipv="ipv4" chain="OUTd_sblan">-j LOG --log-level 6 --log-uid -m limit --limit 10/minute --log-prefix "fwOUT_sblan "</rule>
+  <rule priority="9" table="filter" ipv="ipv4" chain="OUTd_sblan">-j ACCEPT</rule>
+  <!-- IPv6 -->
+  <chain ipv="ipv6" table="filter" chain="OUTd_sblan"/>
+  <rule priority="0" table="filter" ipv="ipv6" chain="OUTPUT">-o lo -j ACCEPT</rule>
+  <rule priority="0" table="filter" ipv="ipv6" chain="OUTPUT">-m state --state ESTABLISHED,RELATED -j ACCEPT</rule>
+  <rule priority="0" table="filter" ipv="ipv6" chain="OUTPUT">-p ICMPv6 --dst fe80::/8 -j ACCEPT</rule><!-- IPv6 Neighbor Discovery -->
+  <rule priority="1" table="filter" ipv="ipv6" chain="OUTPUT">-m set --match-set sblan6 dst -g OUTd_sblan</rule>
+  <rule priority="8" table="filter" ipv="ipv6" chain="OUTPUT">-j LOG --log-level 6 --log-uid -m limit --limit 10/minute --log-prefix "fwOUTPUT "</rule>
+  <rule priority="9" table="filter" ipv="ipv6" chain="OUTPUT">-j ACCEPT</rule>
+  <!-- enforce: <rule priority="9" table="filter" ipv="ipv6" chain="OUTPUT">-j REJECT</rule> -->
+  <!-- IPv6 chain OUTd_sblan -->
+  <rule priority="2" table="filter" ipv="ipv6" chain="OUTd_sblan">-p ICMPv6 -j ACCEPT</rule>
+  <rule priority="2" table="filter" ipv="ipv6" chain="OUTd_sblan">-p udp --dport domain -j ACCEPT</rule>
+  <rule priority="2" table="filter" ipv="ipv6" chain="OUTd_sblan">-p tcp --dport 9100 -j ACCEPT</rule><!-- Prometheus node exporter -->
+  <rule priority="8" table="filter" ipv="ipv6" chain="OUTd_sblan">-j LOG --log-level 6 --log-uid -m limit --limit 10/minute --log-prefix "fwOUTPUT "</rule>
+  <rule priority="9" table="filter" ipv="ipv6" chain="OUTd_sblan">-j ACCEPT</rule>
+</direct>

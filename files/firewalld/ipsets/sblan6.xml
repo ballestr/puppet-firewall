@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Managed by Puppet -->
+<!-- puppetfile: firewalld/ipsets/sblan6.xml -->
+<ipset type="hash:net">
+  <short>sblan6</short>
+  <description>SB networks IPv6</description>
+  <option name="family" value="inet6"/>
+  <entry>2001:1234::/32</entry><!-- SB Public -->
+  <entry>FD01:1234::/32</entry><!-- Local [RFC4193] -->
+</ipset>

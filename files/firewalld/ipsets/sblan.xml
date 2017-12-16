@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Managed by Puppet -->
+<!-- puppetfile: firewalld/ipsets/sblan4.xml -->
+<ipset type="hash:net">
+  <short>sblan</short>
+  <description>SB networks IPv4</description>
+  <entry>199.199.198.0/24</entry><!-- SB Public IPs -->
+  <entry>192.168.25.0/24</entry><!-- SB TechnicalNetwork -->
+  <entry>10.66.0.0/16</entry><!-- SB IT -->
+  <entry>10.16.0.0/16</entry><!-- SB IT -->
+</ipset>

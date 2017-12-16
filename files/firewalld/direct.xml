@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Managed by Puppet -->
+<!-- puppetfile: firewalld/direct.xml -->
+<!-- default empty OUTPUT filter -->
+<direct>
+</direct>

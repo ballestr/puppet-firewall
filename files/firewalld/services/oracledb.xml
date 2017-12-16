@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Managed by Puppet -->
+<!-- puppetfile: firewalld/services/oracledb.xml -->
+<service>
+  <short>oracledb</short>
+  <description>Oracle DataBase</description>
+  <port protocol="tcp" port="1521"/><!-- tnslsnr -->
+  <port protocol="tcp" port="5500"/><!-- tnslsnr -->
+  <!-- port 6150 local Oracle Notification Services (ONS) -->
+</service>

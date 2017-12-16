@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Managed by Puppet -->
+<!-- puppetfile: firewalld/services/node_exporter.xml -->
+<service>
+  <short>node_exporter</short>
+  <description>Prometheus node_exporter</description>
+  <port protocol="tcp" port="9100"/>
+</service>

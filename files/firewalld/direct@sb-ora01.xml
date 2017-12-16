@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Managed by Puppet -->
+<!-- puppetfile: firewalld/direct@sb-ora01.xml -->
+<direct>
+  <!-- IPv4 -->
+  <rule priority="0" table="filter" ipv="ipv4" chain="OUTPUT">-o lo -j ACCEPT</rule>
+  <rule priority="0" table="filter" ipv="ipv4" chain="OUTPUT">-m state --state ESTABLISHED,RELATED -j ACCEPT</rule>
+  <rule priority="1" table="filter" ipv="ipv4" chain="OUTPUT">-p udp --dport ntp -j ACCEPT</rule>
+  <rule priority="1" table="filter" ipv="ipv4" chain="OUTPUT">-p udp --dport domain -j ACCEPT</rule>
+  <rule priority="1" table="filter" ipv="ipv4" chain="OUTPUT">-p udp --dport bootps -j ACCEPT</rule>
+  <rule priority="1" table="filter" ipv="ipv4" chain="OUTPUT">-p tcp --dport 8140 -j ACCEPT</rule><!-- puppet -->
+  <rule priority="1" table="filter" ipv="ipv4" chain="OUTPUT">-p udp --dport 8649 -j ACCEPT</rule><!-- ganglia -->
+  <rule priority="8" table="filter" ipv="ipv4" chain="OUTPUT">-j LOG --log-level 6 --log-uid -m limit --limit 10/minute --log-prefix "fwOUTPUT "</rule>
+  <rule priority="9" table="filter" ipv="ipv4" chain="OUTPUT">-j ACCEPT</rule>
+  <!-- IPv6 -->
+  <!-- no IPv6 traffic expected from this host -->
+  <rule priority="0" table="filter" ipv="ipv6" chain="OUTPUT">-o lo -j ACCEPT</rule>
+  <rule priority="0" table="filter" ipv="ipv6" chain="OUTPUT">-m state --state ESTABLISHED,RELATED -j ACCEPT</rule>
+  <rule priority="8" table="filter" ipv="ipv6" chain="OUTPUT">-j LOG --log-level 6 --log-uid -m limit --limit 10/minute --log-prefix "fwOUTPUT "</rule>
+  <rule priority="9" table="filter" ipv="ipv6" chain="OUTPUT">-j ACCEPT</rule>
+</direct>

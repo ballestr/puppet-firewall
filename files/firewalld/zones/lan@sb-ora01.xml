@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Managed by Puppet -->
+<!-- puppetfile: firewalld/zones/lan@sb-ora01.xml -->
+<zone>
+  <source ipset="sblan"/>
+  <short>lan</short>
+  <description>Local Area Network accessible services</description>
+  <service name="ssh"/>
+  <service name="dhcpv6-client"/>
+  <rule>
+    <protocol value="igmp"/>
+    <accept/>
+  </rule>
+  <!-- monitoring client -->
+  <service name="snmp"/>
+  <service name="node_exporter"/>
+  <!-- oracle and other services -->
+  <service name="ntp"/>
+  <service name="rsyncd"/>
+  <service name="oracledb"/>
+  <!-- mystery port, open but log it... -->
+  <port protocol="tcp" port="4241"/>
+  <rule family="ipv4">
+    <port protocol="tcp" port="4241"/>
+    <log prefix="fw4241 " level="info">
+      <limit value="50/m"/>
+    </log>
+    <accept/>
+  </rule>
+</zone>
