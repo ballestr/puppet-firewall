@@ -1,0 +1,43 @@
+#!/bin/bash
+## Managed by Puppet ##
+## check if iptables saved config is up to date
+## Sergio.Ballestrero@gmail.com
+
+MAILTO=root
+IPT=/etc/sysconfig/iptables
+
+## Check service
+if ! /sbin/service iptables status &> /dev/null; then
+    echo "If newiptables_check is installed, iptables should be active. Please fix either, URGENTLY!" | mail -s "[NewIPtables] STOPPED $HOSTNAME" $MAILTO
+    exit 1
+fi
+
+## Check that the Nagios/Icinga servicecheck is being run on this host and has updated its runfile
+if [ -z "find /var/run/sec_fw -mtime -1" ]; then
+    ls -la /var/run/sec_fw 2>&1 | mail -s "[NewIPtables] UNMONITORED $HOSTNAME" $MAILTO
+fi
+
+## hosts may disappear from DNS, causing load failures, so do a dry-run and check it's all OK
+if ! /sbin/iptables-restore --test $IPT.source &> /dev/null ; then
+    /sbin/iptables-restore --test $IPT.source 2>&1 | strings | mail -s "[NewIPtables] FAILING $HOSTNAME" $MAILTO
+    logger -t newiptables "failing on $(ls -l $IPT.source | cut -d' ' -f5-)"
+    exit 1
+fi
+
+if [ $IPT -nt $IPT.source ] ; then
+    # save is later than source, assume it's ok
+    exit 0
+fi
+# iptables is not saved. did newiptables fail?
+FAIL=/var/run/iptables.failed
+if [ -f $FAIL ]; then
+    (ls -l $FAIL; cat $FAIL) | strings | mail -s "[NewIPtables] FAILED $HOSTNAME" $MAILTO
+    logger -t newiptables "failed on $(ls -l $IPT.source | cut -d' ' -f5-)"
+    exit 1
+fi
+# all seems fine, so let's save it
+(
+service iptables save 
+diff -uwB $IPT.save $IPT | sed -e "s/^/|/"
+)| strings | mail -s "[NewIPtables] autosave $HOSTNAME" $MAILTO
+logger -t newiptables "saved $(ls -l $IPT.source | cut -d' ' -f5-)"

@@ -40,7 +40,8 @@ The iptables example is really just an example.
 Make sure you use IPs and not hostnames in your iptables, else you may run into issues at boot time - if the DNS is not available or if the hostnames have changed.
 
 ## ToDo
- [ ] import iptables "source" management, with templates for chain/snippet inclusion, as used in ATLAS TDAQ.
+ [x] import iptables "source" management, with templates for chain/snippet inclusion, as used in ATLAS TDAQ.
+ [ ] re-test
  [ ] parametrise file source path - with Hiera?
  [ ] find out what happens with firewalld startup in case of DNS issues
  [ ] support ipsets also under plain iptables and on RHEL6
